@@ -1,0 +1,21 @@
+{
+  "name": "pecorino",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build" : "babel src -d dist",
+    "start" : "npm run build && node dist/index.js",
+    "start-dev" : "pm2 start --watch --interpreter babel-node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "restify": "^7.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1"
+  }
+}
