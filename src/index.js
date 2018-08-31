@@ -19,4 +19,3 @@ server.get('/move/:xaxis/:yaxis/:zaxis/:speed', move)
 server.listen(8080, function(){
 	console.log('%s listening at %s', server.name, server.url)
 })
-
