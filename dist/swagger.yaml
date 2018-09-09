@@ -1,0 +1,66 @@
+swagger: "2.0"
+
+info:
+  title: "Liquid Handling Robot"
+  description: "Pecorino API"
+  version: "1.0.0"
+
+host: "localhost:3000"
+basePath: "/api"
+schemes:
+- http
+
+paths:
+  /position:
+    x-swagger-router-controller: positionController
+    get:
+      summary: "Get current position."
+      description: "Gets the current robot position (xyz)."
+      operationId: getPosition
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: object
+            schema:
+              $ref: "#/definitions/Position"
+        400:
+          description: "Bad Request."
+
+    post:
+      summary: "Move robot to position."
+      description: "Send command to move robot to specific position (xyz)."
+      operationId: moveToPosition
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: object
+            schema:
+              $ref: "#/definitions/Position"
+        400:
+          description: "Bad Request."
+
+definitions:
+  Position:
+    type: object
+    required:
+      - xAxis
+      - yAxis
+      - zAxis
+    properties:
+      xAxis:
+        type: number
+        format: float
+      yAxis:
+        type: number
+        format: float
+      zAxis:
+        type: number
+        format: float

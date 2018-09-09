@@ -1,0 +1,123 @@
+swagger: "2.0"
+
+info:
+  title: "Liquid Handling Robot"
+  description: "Pecorino API"
+  version: "1.0.0"
+
+host: "localhost:3000"
+basePath: "/api"
+schemes:
+  - http
+
+paths:
+  /port:
+    x-swagger-router-controller: portController
+    get:
+      summary: "Get current port."
+      description: Gets the current port used by SerialPort.
+      operationId: getPort
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Port"
+        400:
+          description: "Bad Request."
+        500:
+          description: "Internal Server Error."
+
+    post:
+      summary: "Set the used port."
+      description: "Configures SerialPort to use the specified port."
+      operationId: setPort
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: port
+          description: "A JSON object describing the port."
+          schema:
+            $ref: "#/definitions/Port"
+
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Port"
+        400:
+          description: "Bad Request."
+        500:
+          description: "Internal Server Error."
+  /position:
+    x-swagger-router-controller: positionController
+    get:
+      summary: "Get current position."
+      description: "Gets the current robot position (xyz)."
+      operationId: getPosition
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Position"
+        400:
+          description: "Bad Request."
+        500:
+          description: "Internal Server Error."
+
+    post:
+      summary: "Move robot to position."
+      description: "Send command to move robot to specific position (xyz)."
+      operationId: moveToPosition
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: position
+          description: "A JSON object with the displacement coordinates."
+          schema:
+            $ref: "#/definitions/Position"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Position"
+        400:
+          description: "Bad Request."
+        500:
+          description: "Internal Server Error."
+
+definitions:
+  Position:
+    type: object
+    required:
+      - x
+      - y
+      - z
+    properties:
+      x:
+        type: number
+        format: float
+      y:
+        type: number
+        format: float
+      z:
+        type: number
+        format: float
+
+  Port:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+    
