@@ -1,4 +1,4 @@
-import PortControl from '../lib/portControl'
+import SmoothieboardInterface from '../lib/smoothieboardInterface'
 
 export function getPort(request, response){
 	response.send({
@@ -8,7 +8,7 @@ export function getPort(request, response){
 
 export function setPort(request, response){
 	let newPort = request.swagger.params.port.value.name
-	PortControl.port = newPort
+	SmoothieboardInterface.port = newPort
 	response.send({
 		name : newPort
 	})

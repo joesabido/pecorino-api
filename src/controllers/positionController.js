@@ -1,4 +1,4 @@
-import PortControl from '../lib/portControl'
+import SmoothieboardInterface from '../lib/smoothieboardInterface'
 
 export function getPosition(request, response){
 	response.send({
