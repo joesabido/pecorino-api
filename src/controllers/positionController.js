@@ -1,5 +1,3 @@
-import SmoothieboardInterface from '../lib/smoothieboardInterface'
-
 export function getPosition(request, response){
 	response.send({
 		x : 1,
