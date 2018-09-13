@@ -11,35 +11,43 @@ schemes:
   - http
 
 paths:
+  /motors/enabled:
+    x-swagger-router-controller: motorsController
+    put:
+      operationId: enableMotors
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Success"
+
+    delete:
+      operationId: disableMotors
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Success"
+    
   /port:
     x-swagger-router-controller: portController
     get:
-      summary: "Get current port."
-      description: Gets the current port used by SerialPort.
       operationId: getPort
       produces:
         - application/json
-      parameters: []
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/Port"
-        400:
-          description: "Bad Request."
-        500:
-          description: "Internal Server Error."
 
     post:
-      summary: "Set the used port."
-      description: "Configures SerialPort to use the specified port."
       operationId: setPort
       produces:
         - application/json
       parameters:
         - in: body
           name: port
-          description: "A JSON object describing the port."
           schema:
             $ref: "#/definitions/Port"
 
@@ -48,32 +56,20 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Port"
-        400:
-          description: "Bad Request."
-        500:
-          description: "Internal Server Error."
+        
   /position:
     x-swagger-router-controller: positionController
     get:
-      summary: "Get current position."
-      description: "Gets the current robot position (xyz)."
       operationId: getPosition
       produces:
         - application/json
-      parameters: []
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/Position"
-        400:
-          description: "Bad Request."
-        500:
-          description: "Internal Server Error."
 
     post:
-      summary: "Move robot to position."
-      description: "Send command to move robot to specific position (xyz)."
       operationId: moveToPosition
       consumes:
         - application/json
@@ -82,7 +78,6 @@ paths:
       parameters:
         - in: body
           name: position
-          description: "A JSON object with the displacement coordinates."
           schema:
             $ref: "#/definitions/Position"
       responses:
@@ -90,10 +85,7 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Position"
-        400:
-          description: "Bad Request."
-        500:
-          description: "Internal Server Error."
+       
   /position/home:
     x-swagger-router-controller: positionController
     get:
@@ -111,34 +103,30 @@ paths:
       responses:
         200:
           description: "Success"
+
   /position/reset:
     x-swagger-router-controller: positionController
-    get:
-      operationId: reset
+    post:
+      operationId: resetPosition
       produces:
         - application/json
       responses:
         200:
           description: "Success"
 
-  /pinsStatus:
-    x-swagger-router-controller: pinsController
+  /status/pins:
+    x-swagger-router-controller: statusController
     get:
-      summary: "Status of the pins."
-      description: "Get current status of the motor pins."
       operationId: getPinsStatus
-      consumes:
-        - application/json
       produces:
         - application/json
-      parameters: []
       responses:
         200:
           description: "Success"
-        400:
-          description: "Bad Request."
-        500:
-          description: "Internal Server Error."
+
+  
+  
+
 
 definitions:
   Position:
