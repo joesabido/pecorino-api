@@ -8,59 +8,158 @@ info:
 host: "localhost:3000"
 basePath: "/api"
 schemes:
-- http
+  - http
+
+tags:
+  - name: Motors
+  - name: Port
+  - name: Position
+  - name: Status
 
 paths:
+  /motors/enabled:
+    x-swagger-router-controller: motorsController
+    put:
+      tags:
+        - Motors
+      operationId: enableMotors
+      summary: "Enables the stepper motors."
+      responses:
+        200:
+          description: "Success"
+
+    delete:
+      tags:
+        - Motors
+      operationId: disableMotors
+      summary: "Disables the stepper motors."
+      responses:
+        200:
+          description: "Success"
+    
+  /port:
+    x-swagger-router-controller: portController
+    get:
+      tags:
+        - Port
+      operationId: getPort
+      summary: "Returns the currently used port."
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Port"
+
+    put:
+      tags:
+        - Port
+      operationId: setPort
+      summary: "Opens the provided port and opens a new connection."
+      parameters:
+        - in: body
+          name: port
+          schema:
+            $ref: "#/definitions/Port"
+
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Port"
+        
   /position:
     x-swagger-router-controller: positionController
     get:
-      summary: "Get current position."
-      description: "Gets the current robot position (xyz)."
+      tags:
+        - Position
       operationId: getPosition
-      produces:
-      - application/json
-      parameters: []
+      summary: "Returns the current position of all axis."
       responses:
         200:
           description: "Success"
           schema:
-            type: object
-            schema:
-              $ref: "#/definitions/Position"
-        400:
-          description: "Bad Request."
+            $ref: "#/definitions/Position"
 
-    post:
-      summary: "Move robot to position."
-      description: "Send command to move robot to specific position (xyz)."
+    put:
+      tags:
+        - Position
       operationId: moveToPosition
-      produces:
-      - application/json
-      parameters: []
+      summary: "Moves to the specified location."
+      parameters:
+        - in: body
+          name: position
+          schema:
+            $ref: "#/definitions/Position"
       responses:
         200:
           description: "Success"
           schema:
-            type: object
-            schema:
-              $ref: "#/definitions/Position"
-        400:
-          description: "Bad Request."
+            $ref: "#/definitions/Position"
+       
+  /position/home:
+    x-swagger-router-controller: positionController
+    get:
+      tags:
+        - Position
+      operationId: getHomeStatus
+      summary: "Returns the Home status for all axis."
+      responses:
+        200:
+          description: "Success"
+
+    put:
+      tags:
+        - Position
+      operationId: goHome
+      summary: "Move to Home."
+      responses:
+        200:
+          description: "Success"
+
+  /position/halt:
+    x-swagger-router-controller: positionController
+    put:
+      tags:
+        - Position
+      operationId: halt
+      summary: "Send HALT command (M119)."
+      responses:
+        200:
+          description: "Success"
+
+  /status/pins:
+    x-swagger-router-controller: statusController
+    get:
+      tags:
+        - Status
+      operationId: getPinsStatus
+      responses:
+        200:
+          description: "Success"
 
 definitions:
   Position:
     type: object
     required:
-      - xAxis
-      - yAxis
-      - zAxis
+      - x
+      - y
+      - z
     properties:
-      xAxis:
+      x:
         type: number
         format: float
-      yAxis:
+      y:
         type: number
         format: float
-      zAxis:
+      z:
         type: number
         format: float
+
+  Port:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+    

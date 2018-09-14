@@ -19,13 +19,6 @@ export function moveToPosition(request, response){
 	})
 }
 
-export function goHome(request, response){
-	SmoothieboardInterface.sendCommand('G28 X')
-	response.send({
-		message : "Ok"
-	})
-}
-
 export function getHomeStatus(request, response){
 	SmoothieboardInterface.sendCommand('G28.6')
 	response.send({
@@ -33,10 +26,15 @@ export function getHomeStatus(request, response){
 	})
 }
 
-export function reset(request, response){
+export function goHome(request, response){
+	SmoothieboardInterface.sendCommand('G28 X')
+	response.send({
+		message : "Ok"
+	})
+}
+
+export function halt(request, response){
 	SmoothieboardInterface.sendCommand('M999')
-	//SmoothieboardInterface.sendCommand('M17')
-	//SmoothieboardInterface.sendCommand('G0 X10 F3000')
 	response.send({
 		message : "Ok"
 	})

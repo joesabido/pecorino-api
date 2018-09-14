@@ -10,21 +10,29 @@ basePath: "/api"
 schemes:
   - http
 
+tags:
+  - name: Motors
+  - name: Port
+  - name: Position
+  - name: Status
+
 paths:
   /motors/enabled:
     x-swagger-router-controller: motorsController
     put:
+      tags:
+        - Motors
       operationId: enableMotors
-      produces:
-        - application/json
+      summary: "Enables the stepper motors."
       responses:
         200:
           description: "Success"
 
     delete:
+      tags:
+        - Motors
       operationId: disableMotors
-      produces:
-        - application/json
+      summary: "Disables the stepper motors."
       responses:
         200:
           description: "Success"
@@ -32,19 +40,21 @@ paths:
   /port:
     x-swagger-router-controller: portController
     get:
+      tags:
+        - Port
       operationId: getPort
-      produces:
-        - application/json
+      summary: "Returns the currently used port."
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/Port"
 
-    post:
+    put:
+      tags:
+        - Port
       operationId: setPort
-      produces:
-        - application/json
+      summary: "Opens the provided port and opens a new connection."
       parameters:
         - in: body
           name: port
@@ -60,21 +70,21 @@ paths:
   /position:
     x-swagger-router-controller: positionController
     get:
+      tags:
+        - Position
       operationId: getPosition
-      produces:
-        - application/json
+      summary: "Returns the current position of all axis."
       responses:
         200:
           description: "Success"
           schema:
             $ref: "#/definitions/Position"
 
-    post:
+    put:
+      tags:
+        - Position
       operationId: moveToPosition
-      consumes:
-        - application/json
-      produces:
-        - application/json
+      summary: "Moves to the specified location."
       parameters:
         - in: body
           name: position
@@ -89,27 +99,30 @@ paths:
   /position/home:
     x-swagger-router-controller: positionController
     get:
+      tags:
+        - Position
       operationId: getHomeStatus
-      produces:
-        - application/json
+      summary: "Returns the Home status for all axis."
       responses:
         200:
           description: "Success"
 
-    post:
+    put:
+      tags:
+        - Position
       operationId: goHome
-      produces:
-        - application/json
+      summary: "Move to Home."
       responses:
         200:
           description: "Success"
 
-  /position/reset:
+  /position/halt:
     x-swagger-router-controller: positionController
-    post:
-      operationId: resetPosition
-      produces:
-        - application/json
+    put:
+      tags:
+        - Position
+      operationId: halt
+      summary: "Send HALT command (M119)."
       responses:
         200:
           description: "Success"
@@ -117,16 +130,12 @@ paths:
   /status/pins:
     x-swagger-router-controller: statusController
     get:
+      tags:
+        - Status
       operationId: getPinsStatus
-      produces:
-        - application/json
       responses:
         200:
           description: "Success"
-
-  
-  
-
 
 definitions:
   Position:
