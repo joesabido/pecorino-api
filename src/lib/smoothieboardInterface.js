@@ -3,6 +3,8 @@ import Binding from '@serialport/bindings'
 import BindingMock from '@serialport/binding-mock'
 import Fs from 'fs'
 
+import Socket from './socket'
+
 class SmoothieboardInterface{
 	constructor(){
 		this.portDevice = null
@@ -34,11 +36,13 @@ class SmoothieboardInterface{
 		}
 
 		this.port.on('data', (data) => {
-			console.log(`Data:${data}`.trim())
+			let stringData = data.toString('utf8')
+			Socket.io.emit('data', stringData)
 		})
 		
 		this.port.on('error', (error) => {
-			console.log(`${error}`)
+			let stringError = error.toString('utf8')
+			Socket.io.emit('data', stringError)
 		})
 	}
 
@@ -46,19 +50,6 @@ class SmoothieboardInterface{
 		this.port.write(`${command}\n`)
 	}
 }
-
-//SmoothieboardInterface.sendCommand('M999')
-//SmoothieboardInterface.sendCommand('M17')
-//SmoothieboardInterface.sendCommand('G91')
-
-/*
-const commands = {
-	getPinsStatus : 'M119\n',
-	moveABit : 'M999\nM17\n\nG91\nG0 X200 F3000\n',
-	goHome : 'G28 X\n',
-	checkIfHome: 'G28.6\n'
-}
-*/
 
 const Smoothie = new SmoothieboardInterface()
 
