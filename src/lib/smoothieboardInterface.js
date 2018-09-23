@@ -14,10 +14,11 @@ class SmoothieboardInterface{
 
 	openPort(portDevice){
 		if(portDevice === undefined || portDevice.trim() === ''){
-			console.log(`ERROR: openPort requireds portDevice.`)
+			Socket.io.emit('error', 'openPort requires portDevice.')
 			return
 		}else{
 			this.portDevice = portDevice
+			Socket.io.emit('data', `Port has been set to ${portDevice.toString().trim()}`)
 		}
 
 		if(Fs.existsSync(portDevice) === false){

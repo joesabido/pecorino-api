@@ -128,7 +128,7 @@ paths:
           description: "Success"
 
   /status/pins:
-    x-swagger-router-controller: statusController
+    x-swagger-router-controller: pinsController
     get:
       tags:
         - Status
@@ -140,10 +140,6 @@ paths:
 definitions:
   Position:
     type: object
-    required:
-      - x
-      - y
-      - z
     properties:
       x:
         type: number
@@ -154,6 +150,9 @@ definitions:
       z:
         type: number
         format: float
+      speed:
+        type: number
+        format: integer
 
   Port:
     type: object
