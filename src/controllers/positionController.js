@@ -13,9 +13,9 @@ export function getPosition(request, response){
 export function moveToPosition(request, response){
 	let position = request.swagger.params.position.value
 	
-	let commandX = (position.x ? `X${position.x}` : '')
-	let commandY = (position.y ? `Y${position.y}` : '')
-	let commandZ = (position.z ? `Z${position.z}` : '')
+	let commandX = (position.x !== undefined && position.x.toString().trim() !== '' ? `X${position.x}` : '')
+	let commandY = (position.y !== undefined && position.y.toString().trim() !== '' ? `Y${position.y}` : '')
+	let commandZ = (position.z !== undefined && position.z.toString().trim() !== '' ? `Z${position.z}` : '')
 	let speed = (position.speed ? `F${position.speed}` : '')
 
 	let command = `G0 ${commandX} ${commandY} ${commandZ} ${speed}`.replace(/\s+/g, ' ')
@@ -36,6 +36,13 @@ export function moveToPosition(request, response){
 
 export function getHomeStatus(request, response){
 	SmoothieboardInterface.sendCommand('G28.6')
+	response.send({
+		message:"Ok"
+	})
+}
+
+export function setHome(request, response){
+	SmoothieboardInterface.sendCommand('G28.3')
 	response.send({
 		message:"Ok"
 	})

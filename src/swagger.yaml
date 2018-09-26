@@ -106,7 +106,14 @@ paths:
       responses:
         200:
           description: "Success"
-
+    post:
+      tags:
+        - Position
+      operationId: setHome
+      summary: "Set current position as Home."
+      responses:
+        200:
+          description: "Success"
     put:
       tags:
         - Position
