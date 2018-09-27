@@ -6,13 +6,22 @@ import Fs from 'fs'
 import Http from 'http'
 import Cors from 'cors'
 import Socket from './lib/socket'
+import Readline from 'readline'
 
 const app = Express()
 const server = Http.createServer(app)
 const io = Socket.setup(server)
+
+//import SmoothieboardInterface from './lib/smoothieboardInterface'
+
 const serverPort = 3000
 const controllerPath = Path.join(__dirname, '/controllers')
 const swaggerYamlPath = Path.join(__dirname, '/swagger.yaml')
+const ReadlinePrompt = Readline.createInterface({
+	input : process.stdin,
+	output : process.stdout,
+	prompt : 'Command > '
+})
 
 const routerOptions = {
 	controllers : controllerPath
@@ -20,6 +29,13 @@ const routerOptions = {
 
 const spec = Fs.readFileSync(swaggerYamlPath, 'utf8')
 const swaggerDoc = JsYaml.safeLoad(spec)
+
+ReadlinePrompt.on('line', (line) => {
+	if(line !== undefined && line.toString().trim() !== ''){
+		//SmoothieboardInterface.sendCommand(line.toString().trim().toUpperCase())
+		ReadlinePrompt.prompt()
+	}
+})
 
 SwaggerTools.initializeMiddleware(swaggerDoc, (swaggerMw) => {
 	app.use(Cors())
@@ -29,6 +45,6 @@ SwaggerTools.initializeMiddleware(swaggerDoc, (swaggerMw) => {
 	app.use(swaggerMw.swaggerUi())
 	
 	server.listen(serverPort, () => {
-		console.log('Listening on http://localhost:%d ', serverPort)
+		ReadlinePrompt.prompt()
 	})
 })

@@ -13,7 +13,7 @@ class SmoothieboardInterface{
 	}
 
 	openPort(portDevice){
-		if(portDevice === undefined || portDevice.trim() === ''){
+		if(!portDevice || portDevice === undefined || portDevice.trim() === ''){
 			Socket.io.emit('error', 'openPort requires portDevice.')
 			return
 		}else{
