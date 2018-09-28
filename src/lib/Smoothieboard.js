@@ -3,6 +3,7 @@ import Binding from '@serialport/bindings'
 import BindingMock from '@serialport/binding-mock'
 import Fs from 'fs'
 import SocketIO from 'socket.io'
+import Readline from 'readline'
 
 class Smoothieboard{
 	constructor(options){		
@@ -11,15 +12,32 @@ class Smoothieboard{
 		this.port = null
 		this.mockPort = false
 		this.socket = null
-		
+		this.shell = null
 		this.initialize()
-		this.openPort()
 	}
 
 	initialize = () => {
 		this.socket = SocketIO(this.server)
+		this.openPort()
+		this.createShell()
 	}
+	
+	createShell = () => {
+		this.shell = Readline.createInterface({
+			input : process.stdin,
+			output : process.stdout,
+			terminal : false,
+			prompt : 'Command > '
+		})
 
+		this.shell.on('line', line => {
+			if(line !== undefined && line.toString().trim() !== ''){
+				this.sendCommand(line.toString().trim().toUpperCase())
+				this.showShell()
+			}
+		})
+	}
+	
 	openPort = () => {
 		if(!this.portDevice || this.portDevice === undefined || this.portDevice.trim() === ''){
 			this.socket.emit('error', 'openPort requires portDevice.')
@@ -59,7 +77,19 @@ class Smoothieboard{
 	}
 
 	sendCommand = (command) => {
+		this.socket.emit('data', `Command being sent: ${command}`)
 		this.port.write(`${command}\n`)
+	}
+
+	middleware = () => {
+		return (request, response, next) => {
+			request.smoothie = this
+			next()
+		}
+	}
+
+	showShell = () => {
+		this.shell.prompt()
 	}
 }
 
