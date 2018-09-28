@@ -20,6 +20,7 @@ const swaggerYamlPath = Path.join(__dirname, '/swagger.yaml')
 const ReadlinePrompt = Readline.createInterface({
 	input : process.stdin,
 	output : process.stdout,
+	terminal : false,
 	prompt : 'Command > '
 })
 
