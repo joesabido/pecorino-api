@@ -11,6 +11,7 @@ schemes:
   - http
 
 tags:
+  - name: "Custom Commands"
   - name: Motors
   - name: Port
   - name: Position
@@ -140,6 +141,27 @@ paths:
       tags:
         - Status
       operationId: getPinsStatus
+      responses:
+        200:
+          description: "Success"
+  
+  /commands:
+    x-swagger-router-controller: CommandsController
+    post:
+      tags:
+        - "Custom Commands"
+      parameters:
+        - in: body
+          name: commandData
+          schema:
+            type: object
+            required:
+              - command
+            properties:
+              command:
+                type: string
+
+      operationId: sendCustomCommand
       responses:
         200:
           description: "Success"
