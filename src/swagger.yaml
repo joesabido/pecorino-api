@@ -18,7 +18,7 @@ tags:
 
 paths:
   /motors/enabled:
-    x-swagger-router-controller: motorsController
+    x-swagger-router-controller: MotorsController
     put:
       tags:
         - Motors
@@ -38,7 +38,7 @@ paths:
           description: "Success"
     
   /port:
-    x-swagger-router-controller: portController
+    x-swagger-router-controller: PortController
     get:
       tags:
         - Port
@@ -68,7 +68,7 @@ paths:
             $ref: "#/definitions/Port"
         
   /position:
-    x-swagger-router-controller: positionController
+    x-swagger-router-controller: PositionController
     get:
       tags:
         - Position
@@ -97,7 +97,7 @@ paths:
             $ref: "#/definitions/Position"
        
   /position/home:
-    x-swagger-router-controller: positionController
+    x-swagger-router-controller: PositionController
     get:
       tags:
         - Position
@@ -124,7 +124,7 @@ paths:
           description: "Success"
 
   /position/halt:
-    x-swagger-router-controller: positionController
+    x-swagger-router-controller: PositionController
     put:
       tags:
         - Position
@@ -135,7 +135,7 @@ paths:
           description: "Success"
 
   /status/pins:
-    x-swagger-router-controller: pinsController
+    x-swagger-router-controller: PinsController
     get:
       tags:
         - Status
