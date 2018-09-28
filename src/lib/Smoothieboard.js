@@ -31,10 +31,12 @@ class Smoothieboard{
 		})
 
 		this.shell.on('line', line => {
-			if(line !== undefined && line.toString().trim() !== ''){
-				this.sendCommand(line.toString().trim().toUpperCase())
-				this.showShell()
+			if(line === undefined || line.toString().trim() === ''){
+				return
 			}
+
+			this.sendCommand(line)
+			this.showShell()
 		})
 	}
 	
