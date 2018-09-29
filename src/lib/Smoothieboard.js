@@ -7,7 +7,7 @@ import Readline from 'readline'
 
 class Smoothieboard{
 	constructor(options){		
-		this.portDevice = options.portDevice
+		this.portDevice = options.portDevice || ''
 		this.server = options.server
 		this.port = null
 		this.mockPort = false
@@ -18,7 +18,7 @@ class Smoothieboard{
 
 	initialize = () => {
 		this.socket = SocketIO(this.server)
-		this.openPort()
+		this.openPort(this.portDevice)
 		this.createShell()
 	}
 	
@@ -40,11 +40,16 @@ class Smoothieboard{
 		})
 	}
 	
-	openPort = () => {
-		if(!this.portDevice || this.portDevice === undefined || this.portDevice.trim() === ''){
+	openPort = (portDevice) => {
+		if(portDevice === undefined && this.portDevice === ''){
+			this.socket.emit('error', 'Port Device has not been set.')
+		}
+
+		if(!portDevice || portDevice === undefined || portDevice.trim() === ''){
 			this.socket.emit('error', 'openPort requires portDevice.')
 			return
 		}else{
+			this.portDevice = portDevice
 			this.socket.emit('data', `Port has been set to ${this.portDevice.toString().trim()}`)
 		}
 

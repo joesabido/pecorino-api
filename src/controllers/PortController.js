@@ -11,3 +11,11 @@ export function setPort(request, response){
 		name : port
 	})
 }
+
+export function cyclePort(request, response){
+	let currentPort = request.smoothie.portDevice
+	request.smoothie.openPort(currentPort)
+	response.send({
+		name : currentPort
+	})
+}

@@ -26,7 +26,5 @@ SwaggerTools.initializeMiddleware(swaggerConfig, swaggerMw => {
 	app.use(swaggerMw.swaggerRouter({ controllers : swaggerControllers }))
 	app.use(swaggerMw.swaggerUi())
 	
-	server.listen(serverPort, () => {
-		smoothie.showShell()
-	})
+	server.listen(serverPort)
 })
