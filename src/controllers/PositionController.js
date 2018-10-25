@@ -46,7 +46,7 @@ export function setHome(request, response){
 }
 
 export function goHome(request, response){
-	request.smoothie.sendCommand('G28 X')
+	request.smoothie.sendCommand('G28')
 	response.send({
 		message : "Ok"
 	})
